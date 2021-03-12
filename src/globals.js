@@ -3,6 +3,7 @@ const { MongoClient } = require('mongodb');
 const aws = require('aws-sdk');
 aws.config.update({ region: 'us-east-1' });
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const twilio = require('twilio');
 
 /*
  * Configures and returns a logger instance.
@@ -69,3 +70,8 @@ exports.createCollections = function() {
  * The global Stripe client.
  */
 exports.stripe = stripe;
+
+/*
+ * The global Twilio client.
+ */
+exports.twilio = twilio;

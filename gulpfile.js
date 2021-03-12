@@ -20,7 +20,7 @@ function server(done) {
 }
 
 function watch() {
-  return gulp.watch(['./config.js', './src/**/*.js'], server);
+  return gulp.watch(['./.env', './src/**/*.js'], server);
 }
 
 process.on('exit', function() {

@@ -6,7 +6,7 @@ require('./middleware')(app);
 require('./controllers')(app);
 require('./middleware/error')(app); // Must be registered last.
 
-const port = 3001;
+const port = 3002;
 app.listen(port, async () => {
   await client.connect().then(createCollections);
   console.log(

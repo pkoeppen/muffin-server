@@ -8,7 +8,8 @@
     "dev": "cross-env NODE_ENV=development gulp watch",
     "build": "gulp build",
     "start": "cross-env NODE_ENV=production node src/index.js",
-    "lint": "eslint --ext .js --ignore-path .gitignore ."
+    "lint": "eslint --ext .js --ignore-path .gitignore .",
+    "seed:admin": "node -r dotenv/config src/seedAdminUser.js"
   },
   "dependencies": {
     "aws-sdk": "^2.817.0",
@@ -33,7 +34,8 @@
     "passport-anonymous": "^1.0.1",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
-    "stripe": "^8.138.0"
+    "stripe": "^8.138.0",
+    "twilio": "^3.57.0"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.12.11",
