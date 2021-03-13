@@ -7,9 +7,9 @@
   "scripts": {
     "dev": "gulp watch",
     "build": "gulp build",
-    "start": "node -r dotenv/config src/index.js",
+    "start": "node src/index.js",
     "lint": "eslint --ext .js --ignore-path .gitignore .",
-    "seed:admin": "node -r dotenv/config src/seedAdminUser.js"
+    "seed:admin": "node src/seedAdminUser.js"
   },
   "dependencies": {
     "aws-sdk": "^2.817.0",
