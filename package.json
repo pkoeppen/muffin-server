@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development gulp watch",
     "build": "gulp build",
-    "start": "cross-env NODE_ENV=production node src/index.js",
+    "start": "cross-env NODE_ENV=production node -r dotenv/config src/index.js",
     "lint": "eslint --ext .js --ignore-path .gitignore .",
     "seed:admin": "node -r dotenv/config src/seedAdminUser.js"
   },

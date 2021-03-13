@@ -10,7 +10,7 @@ exports.cors = cors({
       ? process.env.ROOT_URL
       : 'http://localhost:3000',
   credentials: true,
-}); // todo
+});
 exports.json = express.json();
 exports.urlencoded = express.urlencoded({ extended: true });
 exports.boolparser = boolParser();
