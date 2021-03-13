@@ -34,7 +34,10 @@ async function login(req, res, next) {
       const cookieOptions = {
         httpOnly: false,
         secure: process.env.NODE_ENV === 'production',
-        domain: 'localhost',
+        domain:
+          process.env.NODE_ENV === 'production'
+            ? process.env.DOMAIN
+            : 'localhost',
         path: '/',
         maxAge: process.env.JWT_EXPIRATION_MS,
       };

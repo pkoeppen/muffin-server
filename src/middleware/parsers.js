@@ -4,7 +4,13 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const boolParser = require('express-query-boolean');
 
-exports.cors = cors({ origin: 'http://localhost:3000', credentials: true }); // todo
+exports.cors = cors({
+  origin:
+    process.env.NODE_ENV === 'production'
+      ? process.env.ROOT_URL
+      : 'http://localhost:3000',
+  credentials: true,
+}); // todo
 exports.json = express.json();
 exports.urlencoded = express.urlencoded({ extended: true });
 exports.boolparser = boolParser();

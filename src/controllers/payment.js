@@ -40,8 +40,16 @@ async function createCheckoutSession(req, res, next) {
         },
       ],
       mode: 'payment',
-      success_url: `${process.env.ROOT_URL}/payment/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.ROOT_URL}`,
+      success_url: `${
+        process.env.NODE_ENV === 'production'
+          ? process.env.ROOT_URL
+          : 'http://localhost:3000'
+      }/payment/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${
+        process.env.NODE_ENV === 'production'
+          ? process.env.ROOT_URL
+          : 'http://localhost:3000'
+      }`,
     });
 
     res.json({ id: session.id });
