@@ -6,6 +6,7 @@ module.exports = {
       maxMemoryRestart: '512M',
       script: 'node',
       args: './src/index.js',
+      watch: true,
     },
   ],
 };
