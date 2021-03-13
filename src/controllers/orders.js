@@ -2,6 +2,11 @@ const { StatusCodes } = require('http-status-codes');
 const { stripe, collections, ReturnableError } = require('../globals');
 const { auth, attach } = require('../middleware/auth');
 const { ObjectID } = require('mongodb');
+const { twilio } = require('../globals');
+const client = twilio(
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN
+);
 const router = require('express').Router();
 
 /*
@@ -71,6 +76,7 @@ async function addOrder(req, res, next) {
         );
       }
 
+      // Add order to database.
       const order = {
         created,
         name,
@@ -82,6 +88,13 @@ async function addOrder(req, res, next) {
         delivered: false,
       };
       await collections.orders.insertOne(order);
+
+      // Text self about new order.
+      await client.messages.create({
+        body: `You have a new order from ${name}! View details at https://muffin.quest/admin.`,
+        from: process.env.TWILIO_PHONE_NUMBER,
+        to: process.env.TWILIO_RELAY_NUMBER,
+      });
     } else {
       res.status(StatusCodes.BAD_REQUEST).send('Incorrect event type');
     }
@@ -90,6 +103,9 @@ async function addOrder(req, res, next) {
   }
 }
 
+/*
+ * Add a custom order.
+ */
 router.put('/custom', auth, addCustomOrder);
 async function addCustomOrder(req, res, next) {
   try {
@@ -129,6 +145,9 @@ async function addCustomOrder(req, res, next) {
   }
 }
 
+/*
+ * Update an order.
+ */
 router.post('/:id', auth, updateOrder);
 async function updateOrder(req, res, next) {
   try {
@@ -150,6 +169,9 @@ async function updateOrder(req, res, next) {
   }
 }
 
+/*
+ * Delete an order.
+ */
 router.delete('/:id', auth, deleteOrder);
 async function deleteOrder(req, res, next) {
   try {
