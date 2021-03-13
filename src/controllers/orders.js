@@ -90,17 +90,25 @@ async function addOrder(req, res, next) {
   }
 }
 
-router.post('/custom', auth, addCustomOrder);
+router.put('/custom', auth, addCustomOrder);
 async function addCustomOrder(req, res, next) {
   try {
     const created = Date.now();
     const name = req.body.name || null;
     const email = req.body.email || null;
-    const address = req.body.address;
+    const address = {
+      line1: req.body.address_line1,
+      line2: req.body.address_line2,
+      city: req.body.address_city,
+      state: req.body.address_state,
+      postal_code: req.body.address_postal_code,
+    };
     const item = req.body.item;
-    const total = req.body.total;
+    const total = parseFloat(req.body.total);
+    const paid = !!req.body.paid;
+    const delivered = !!req.body.delivered;
 
-    if (!created || !address || !item || !total) {
+    if (!created || !item || !total) {
       throw new ReturnableError('Missing order data', StatusCodes.BAD_REQUEST);
     }
 
@@ -110,11 +118,12 @@ async function addCustomOrder(req, res, next) {
       email,
       address,
       item,
-      total: total / 100,
-      paid: false,
-      delivered: false,
+      total,
+      paid,
+      delivered,
     };
     await collections.orders.insertOne(order);
+    res.json(order);
   } catch (error) {
     next(error);
   }
@@ -136,6 +145,23 @@ async function updateOrder(req, res, next) {
     }
 
     res.json(order);
+  } catch (error) {
+    next(error);
+  }
+}
+
+router.delete('/:id', auth, deleteOrder);
+async function deleteOrder(req, res, next) {
+  try {
+    const data = await collections.orders.deleteOne({
+      _id: new ObjectID(req.params.id),
+    });
+
+    if (!data.deletedCount) {
+      throw new ReturnableError('Order not found', StatusCodes.NOT_FOUND);
+    }
+
+    res.status(StatusCodes.OK).end();
   } catch (error) {
     next(error);
   }

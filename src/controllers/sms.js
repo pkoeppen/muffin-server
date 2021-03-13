@@ -11,7 +11,6 @@ const router = require('express').Router();
 router.post('/', handleIncomingSms);
 async function handleIncomingSms(req, res, next) {
   try {
-    console.log(req.body);
     const twiml = new twilio.twiml.MessagingResponse();
 
     twiml.message(
