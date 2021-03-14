@@ -10,7 +10,7 @@ const client = twilio(
 const router = require('express').Router();
 
 /*
- * List recent orders.
+ * List orders.
  */
 router.get('/', attach, listOrders);
 async function listOrders(req, res, next) {
@@ -28,7 +28,7 @@ async function listOrders(req, res, next) {
       .limit(limit)
       .toArray();
 
-    const data = { orders };
+    const data = { data: orders };
     if (isAdmin) {
       data.count = await collections.orders.countDocuments();
     } else {

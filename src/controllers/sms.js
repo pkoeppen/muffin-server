@@ -44,6 +44,27 @@ async function handleIncomingSms(req, res, next) {
 }
 
 /*
+ * List messages.
+ */
+router.get('/', auth, listMessages);
+async function listMessages(req, res, next) {
+  try {
+    const sort = { created: parseInt(req.query.sort) || -1 };
+    const limit = parseInt(req.query.limit) || 30;
+    const messages = await collections.messages
+      .find({})
+      .sort(sort)
+      .limit(limit)
+      .toArray();
+    const count = await collections.messages.countDocuments();
+    const data = { data: messages, count };
+    res.json(data);
+  } catch (error) {
+    next(error);
+  }
+}
+
+/*
  * Delete a message.
  */
 router.delete('/:id', auth, deleteMessage);
