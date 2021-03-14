@@ -10,6 +10,7 @@ require('./controllers')(app);
 require('./middleware/error')(app); // Must be registered last.
 
 const port = 3002;
+app.enable('trust proxy'); // Trust NGINX.
 app.listen(port, async () => {
   await client.connect().then(createCollections);
   console.log(
