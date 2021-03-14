@@ -64,6 +64,7 @@ exports.createCollections = function() {
     { expireAfterSeconds: 0 }
   );
   exports.collections.orders = db.collection('orders');
+  exports.collections.messages = db.collection('messages');
 };
 
 /*
