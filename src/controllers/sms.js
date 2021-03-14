@@ -11,9 +11,25 @@ const router = require('express').Router();
 /*
  * Handles incoming SMS messages.
  */
-router.post('/', twilio.webhook({ validate: true }), handleIncomingSms);
+router.post('/', handleIncomingSms);
 async function handleIncomingSms(req, res, next) {
   try {
+    const twilioSignature = req.headers['x-twilio-signature'];
+    const params = req.body;
+    const url = req.protocol + '://' + req.get('host') + req.originalUrl;
+
+    const requestIsValid = twilio.validateRequest(
+      process.env.TWILIO_AUTH_TOKEN,
+      twilioSignature,
+      url,
+      params
+    );
+
+    // Validate that request is coming from Twilio.
+    if (!requestIsValid) {
+      throw new ReturnableError('Unauthorized', StatusCodes.FORBIDDEN);
+    }
+
     // Reply to sender.
     const twiml = new twilio.twiml.MessagingResponse();
     twiml.message(
