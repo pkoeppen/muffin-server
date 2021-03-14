@@ -28,11 +28,12 @@ async function listOrders(req, res, next) {
       .limit(limit)
       .toArray();
 
-    const data = { data: orders };
+    const data = {};
     if (isAdmin) {
+      data.orders = orders;
       data.count = await collections.orders.countDocuments();
     } else {
-      data.orders.map((order) => ({
+      data.orders = orders.map((order) => ({
         created: order.created,
         location: order.address.city,
         item: order.item,
