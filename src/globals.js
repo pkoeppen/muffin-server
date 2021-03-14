@@ -19,7 +19,7 @@ exports.logger = (function() {
       process.env.NODE_ENV === 'production' ? false : pinoPrettyOptions,
   };
   const logger = pino(pinoOptions);
-  logger.level = process.env.NODE_ENV === 'production' ? 'error' : 'debug';
+  logger.level = process.env.NODE_ENV === 'production' ? 'info' : 'debug';
   return logger;
 })();
 
