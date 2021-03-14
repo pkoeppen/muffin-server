@@ -8,7 +8,7 @@ function server(done) {
   if (node) {
     node.kill();
   }
-  node = spawn('node', ['-r', 'dotenv/config', 'src/index.js'], {
+  node = spawn('node', ['src/index.js'], {
     stdio: 'inherit',
   });
   node.on('close', function(code) {
