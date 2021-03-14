@@ -35,7 +35,7 @@ async function listOrders(req, res, next) {
     } else {
       data.data = orders.map((order) => ({
         created: order.created,
-        location: order.address.city,
+        address: { city: order.address.city },
         item: order.item,
         total: order.total,
       }));
