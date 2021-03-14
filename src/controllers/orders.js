@@ -30,10 +30,10 @@ async function listOrders(req, res, next) {
 
     const data = {};
     if (isAdmin) {
-      data.orders = orders;
+      data.data = orders;
       data.count = await collections.orders.countDocuments();
     } else {
-      data.orders = orders.map((order) => ({
+      data.data = orders.map((order) => ({
         created: order.created,
         location: order.address.city,
         item: order.item,
