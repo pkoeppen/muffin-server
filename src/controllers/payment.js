@@ -58,6 +58,9 @@ async function createCheckoutSession(req, res, next) {
   }
 }
 
+/*
+ * Get customer details on payment success.
+ */
 router.get('/success', attach, getPaymentSuccessDetails);
 async function getPaymentSuccessDetails(req, res, next) {
   try {

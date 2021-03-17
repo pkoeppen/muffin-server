@@ -79,6 +79,7 @@ async function addOrder(req, res, next) {
 
       // Add order to database.
       const order = {
+        _id: checkout.id,
         created,
         name,
         email,
@@ -99,6 +100,35 @@ async function addOrder(req, res, next) {
     } else {
       res.status(StatusCodes.BAD_REQUEST).send('Incorrect event type');
     }
+  } catch (error) {
+    next(error);
+  }
+}
+
+/*
+ * Add phone number to order.
+ */
+router.put('/:id', addPhoneNumber);
+async function addPhoneNumber(req, res, next) {
+  try {
+    const phoneNumber = req.query.phone;
+    const { value: order } = await collections.orders.findOneAndUpdate(
+      {
+        _id: req.params.id,
+      },
+      {
+        $set: {
+          phone: phoneNumber,
+        },
+      },
+      { returnOriginal: false }
+    );
+
+    if (!order) {
+      throw new ReturnableError('Order not found', StatusCodes.NOT_FOUND);
+    }
+
+    res.status(200).send('Phone number added');
   } catch (error) {
     next(error);
   }
